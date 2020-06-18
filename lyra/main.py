@@ -34,11 +34,14 @@ def main():
         
         pool1.map_async(youtube_download.download, video_ids)
         pool1.close()
-        time.sleep(10)
+        time.sleep(20)
         pool2.map_async(analysis.feature_extraction.build_spectrogram, video_ids)
         pool1.join()
         pool2.close()
         pool2.join()
+        
+        for id in video_ids:
+            os.remove(id + ".wav")
         
     except:
         print("Error")
