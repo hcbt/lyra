@@ -6,14 +6,14 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import scipy.io.wavfile
 
-#load audio as waveform y, set sampling rate to sr
+# Load audio into numpy array, 
+# waveform y, sampling rate sr
 def load_file(id):
     sr, y = scipy.io.wavfile.read(id + ".wav")
     return y, sr
 
-#audio to spectrogram
+# Audio to spectrogram
 def build_spectrogram(id):
-    #os.chdir(destination)
     y, sr = load_file(id)
 
     plt.figure(figsize=(10, 10))

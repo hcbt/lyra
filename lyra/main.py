@@ -16,15 +16,16 @@ youtube_video_url = youtube_url + "/watch?v="
 youtube_playlist_url = youtube_url + "/playlist?list="
 
 def main():
-    #Read command line arguments
+    # Read command line arguments
     playlist = sys.argv[1]
     destination = sys.argv[2]
 
-    #Gets playlist id from the full link
+    # Gets playlist id from the full link
     playlist_id = playlist.split("list=")[1]
     playlist_items = youtube_resources.playlistItems()
     video_ids = playlist_items.video_id(playlist_id)
     
+    # Download all videos from playlist, build spectrograms, remove leftover files
     try:
         os.chdir(destination)
         
