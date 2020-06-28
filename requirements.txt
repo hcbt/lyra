@@ -1,4 +1,6 @@
 matplotlib
+sklearn
+keras
 scipy
 youtube-dl
 google-auth-oauthlib

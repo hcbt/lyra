@@ -24,14 +24,15 @@ def main():
     playlist_id = playlist.split("list=")[1]
     playlist_items = youtube_resources.playlistItems()
     video_ids = playlist_items.video_id(playlist_id)
+
     
     # Download all videos from playlist, build spectrograms, remove leftover files
     try:
         os.chdir(destination)
         
         #Set the multiprocessing pool        
-        pool1 = multiprocessing.Pool(processes=2)
-        pool2 = multiprocessing.Pool(processes=2)
+        pool1 = multiprocessing.Pool(multiprocessing.cpu_count()//2)
+        pool2 = multiprocessing.Pool(multiprocessing.cpu_count()//2)
         
         pool1.map_async(youtube_download.download, video_ids)
         pool1.close()
