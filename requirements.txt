@@ -2,7 +2,9 @@ matplotlib
 sklearn
 keras
 tensorflow
+tensorboard
 scipy
+pandas
 Pillow
 sklearn
 youtube-dl

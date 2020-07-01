@@ -1,17 +1,3 @@
-import pandas as pd
-import numpy as np
-from numpy import argmax
-import matplotlib.pyplot as plt
-import random
-import warnings
-import os
-from PIL import Image
-import pathlib
-import csv
-
-# sklearn Preprocessing
-from sklearn.model_selection import train_test_split
-
 #Keras
 import keras
 import warnings
@@ -81,11 +67,11 @@ momentum = 0.9
 sgd = SGD(lr=learning_rate, momentum=momentum, decay=decay_rate, nesterov=False)
 model.compile(optimizer="sgd", loss="categorical_crossentropy", metrics=['accuracy'])
 
-model.fit_generator(training_set,
-                    steps_per_epoch=100,
-                    epochs=50,
-                    validation_data=test_set,
-                    validation_steps=200)
+model.fit(training_set,
+          steps_per_epoch=100,
+          epochs=50,
+          validation_data=test_set,
+          validation_steps=200)
                     
 #Model Evaluation
 model.evaluate_generator(generator=test_set, steps=50)
