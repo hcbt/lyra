@@ -1,77 +1,90 @@
-#Keras
-import keras
-import warnings
-warnings.filterwarnings('ignore')
-from keras import layers
-from keras.layers import Activation, Dense, Dropout, Conv2D, Flatten, MaxPooling2D, GlobalMaxPooling2D, GlobalAveragePooling1D, AveragePooling2D, Input, Add
-from keras.models import Sequential
-from keras.optimizers import SGD
-from keras.preprocessing.image import ImageDataGenerator
+import tensorflow as tf
 
-train_data = ImageDataGenerator(rescale = 1./255, 
-                                shear_range = 0.2, 
-                                zoom_range = 0.2, 
-                                horizontal_flip = True)
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv2D, Flatten, Dropout, MaxPooling2D
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-test_data = ImageDataGenerator(rescale = 1./255)
+import os
+import numpy as np
+import matplotlib.pyplot as plt
 
-training_set = train_data.flow_from_directory("../data_split/train", 
-                                              target_size = (64, 64), 
-                                              batch_size = 32, 
-                                              class_mode = "categorical", 
-                                              shuffle = False)
-                                              
-test_set = test_data.flow_from_directory("../data_split/val", 
-                                         target_size = (64, 64), 
-                                         batch_size = 32, 
-                                         class_mode = "categorical", 
-                                         shuffle = False)
-                                         
-model = Sequential()
-input_shape=(64, 64, 3)
+train_dir = "../data_split/train"
+validation_dir = "../data_split/val"
 
-#1st hidden layer
-model.add(Conv2D(32, (3, 3), strides=(2, 2), input_shape=input_shape))
-model.add(AveragePooling2D((2, 2), strides=(2,2)))
-model.add(Activation('relu'))
+train_house_dir = os.path.join(train_dir, "house")
+train_techno_dir = os.path.join(train_dir, "techno")
 
-#2nd hidden layer
-model.add(Conv2D(64, (3, 3), padding="same"))
-model.add(AveragePooling2D((2, 2), strides=(2,2)))
-model.add(Activation('relu'))
+validation_house_dir = os.path.join(validation_dir, "house")
+validation_techno_dir = os.path.join(validation_dir, "techno")
 
-#3rd hidden layer
-model.add(Conv2D(64, (3, 3), padding="same"))
-model.add(AveragePooling2D((2, 2), strides=(2,2)))
-model.add(Activation('relu'))
+num_house_tr = len(os.listdir(train_house_dir))
+num_techno_tr = len(os.listdir(train_techno_dir))
 
-#Flatten
-model.add(Flatten())
-model.add(Dropout(rate=0.5))
+num_house_val = len(os.listdir(validation_house_dir))
+num_techno_val = len(os.listdir(validation_techno_dir))
 
-#Add fully connected layer.
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dropout(rate=0.5))
+total_train = num_house_tr + num_techno_tr
+total_val = num_house_val + num_techno_val
 
-#Output layer
-model.add(Dense(10))
-model.add(Activation('softmax'))
+print('total training house images:', num_house_tr)
+print('total training techno images:', num_techno_tr)
+
+print('total validation house images:', num_house_val)
+print('total validation techno images:', num_techno_val)
+print("--")
+print("Total training images:", total_train)
+print("Total validation images:", total_val)
+
+batch_size = 32
+epochs = 15
+IMG_HEIGHT = 775
+IMG_WIDTH = 770
+
+train_image_generator = ImageDataGenerator(rescale = 1./255,
+                                           rotation_range = 45,
+                                           width_shift_range = .15,
+                                           height_shift_range= .15,
+                                           horizontal_flip = True,
+                                           zoom_range = 0.5) # Generator for our training data
+
+validation_image_generator = ImageDataGenerator(rescale = 1./255) # Generator for our validation data
+
+train_data_gen = train_image_generator.flow_from_directory(batch_size = batch_size,
+                                                           directory = train_dir,
+                                                           shuffle = False,
+                                                           target_size = (IMG_HEIGHT, IMG_WIDTH),
+                                                           class_mode = "binary")
+
+val_data_gen = validation_image_generator.flow_from_directory(batch_size = batch_size,
+                                                              directory = validation_dir,
+                                                              target_size = (IMG_HEIGHT, IMG_WIDTH),
+                                                              class_mode = "binary")
+
+model = Sequential([
+    Conv2D(16, 3, padding='same', activation='relu', input_shape=(IMG_HEIGHT, IMG_WIDTH ,3)),
+    MaxPooling2D(),
+    #Dropout(0.2),
+    Conv2D(32, 3, padding='same', activation='relu'),
+    MaxPooling2D(),
+    Conv2D(64, 3, padding='same', activation='relu'),
+    MaxPooling2D(),
+    #Dropout(0.2),
+    Flatten(),
+    Dense(512, activation='relu'),
+    Dense(1)
+])
+
+model.compile(optimizer='adam',
+              loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+
 model.summary()
 
-epochs = 200
-batch_size = 8
-learning_rate = 0.01
-decay_rate = learning_rate / epochs
-momentum = 0.9
-sgd = SGD(lr=learning_rate, momentum=momentum, decay=decay_rate, nesterov=False)
-model.compile(optimizer="sgd", loss="categorical_crossentropy", metrics=['accuracy'])
+model.fit(train_data_gen,
+          steps_per_epoch=total_train // batch_size,
+          epochs=epochs,
+          validation_data=val_data_gen,
+          validation_steps=total_val // batch_size
+)
 
-model.fit(training_set,
-          steps_per_epoch=100,
-          epochs=50,
-          validation_data=test_set,
-          validation_steps=200)
-                    
-#Model Evaluation
-model.evaluate_generator(generator=test_set, steps=50)
+model.evaluate(train_data_gen)
