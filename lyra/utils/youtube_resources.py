@@ -12,7 +12,7 @@ youtube_playlist_url = youtube_url + "/playlist?list="
 class playlistItems:
     def results(self, id): #used to make requests for playlist items
         resource_id = id
-        youtube = youtube_client.api_auth()
+        youtube = utils.youtube_client.api_auth()
         response = youtube.playlistItems().list(part="snippet", playlistId=resource_id, maxResults=50).execute()
         
         next_page_token = response.get("nextPageToken")

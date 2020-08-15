@@ -17,7 +17,7 @@ youtube_playlist_url = youtube_url + "/playlist?list="
 def download(playlist, destination):
     # Gets playlist id from the full link
     playlist_id = playlist.split("list=")[1]
-    playlist_items = youtube_resources.playlistItems()
+    playlist_items = utils.youtube_resources.playlistItems()
     video_ids = playlist_items.video_id(playlist_id)
 
     # Download all videos from playlist, build spectrograms, remove leftover files
@@ -28,7 +28,7 @@ def download(playlist, destination):
         pool1 = multiprocessing.Pool(multiprocessing.cpu_count()//2)
         pool2 = multiprocessing.Pool(multiprocessing.cpu_count()//2)
         
-        pool1.map_async(youtube_download.download, video_ids)
+        pool1.map_async(utils.youtube_download.download, video_ids)
         pool1.close()
         time.sleep(20)
         pool2.map_async(analysis.feature_extraction.build_spectrogram, video_ids)

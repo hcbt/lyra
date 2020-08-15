@@ -11,11 +11,13 @@ scopes = ["https://www.googleapis.com/auth/youtube"]
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
+ROOT_DIR = os.path.dirname(os.path.abspath("../../setup.py"))
+
 def api_auth():
     api_service_name = "youtube"
     api_version = "v3"
-    client_secrets_file = "../auth/client_secret.json"
-    credentials_pickle_file = "../auth/credentials"
+    client_secrets_file = ROOT_DIR + "/lyra/lyra/auth/client_secret.json"
+    credentials_pickle_file = ROOT_DIR + "/lyra/lyra/auth/credentials"
 
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
 
