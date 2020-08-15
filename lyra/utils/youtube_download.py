@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import os
 
 import youtube_dl
@@ -39,7 +38,12 @@ def download(id):
     #os.chdir(destination)
 
     with youtube_dl.YoutubeDL(ytdl_options) as ytdl:
-        ytdl.download([id]) 
+        video = ytdl.extract_info(id, download=False)
+        title = video["title"]
+        print(title)
+        
+        ytdl.download([id])
+        
 
 def get_metadata(id):
     ytdl_options = {
@@ -51,4 +55,5 @@ def get_metadata(id):
         
         artist = video["artist"]
         track = video["track"]
+        
         return artist, track

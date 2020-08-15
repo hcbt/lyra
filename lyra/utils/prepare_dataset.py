@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+import pathlib
 import sys
 import os
 
@@ -8,15 +8,22 @@ import utils.download_playlists
 
 ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
 
+#Download the dataset
 def download():
-    #Initialize dataset
-    print("Downloading dataset")
+    os.chdir(ROOT_DIR)
     
-    os.mkdir(ROOT_DIR + "/data/genres/house")
-    os.mkdir(ROOT_DIR + "/data/genres/techno")
+    genres = "house techno".split()
     
-    utils.download_playlists.download("https://www.youtube.com/playlist?list=PLS9qGVIfZRpzFAyUAz0oh0X7XsDO6i1C0", ROOT_DIR + "/data/genres/house")# House playlist              
-    utils.download_playlists.download("https://www.youtube.com/playlist?list=PLS9qGVIfZRpz5UMjAWwCdhHaJNT6V2Jna", ROOT_DIR + "/data/genres/techno")# Techno playlist
+    for genre in genres:
+        pathlib.Path(f"data/genres/{genre}").mkdir(parents=True, exist_ok=True)
+    
+    print("downloading house dataset")
+    utils.download_playlists.download("https://www.youtube.com/playlist?list=PLS9qGVIfZRpzFAyUAz0oh0X7XsDO6i1C0", "data/genres/house")# House playlist              
+    print("downloading techno dataset")
+    utils.download_playlists.download("https://www.youtube.com/playlist?list=PLS9qGVIfZRpz5UMjAWwCdhHaJNT6V2Jna", "data/genres/techno")# Techno playlist
     
 def split():
-    split_folders.ratio(ROOT_DIR + "/data/", output = ROOT_DIR + "/data_split", seed = 1337, ratio = (.8, .2))
+    split_folders.ratio(ROOT_DIR + "/data/genres/", output = ROOT_DIR + "/data_split/", seed = 1337, ratio = (.8, .2))
+    
+def data_augmentation():
+    pass

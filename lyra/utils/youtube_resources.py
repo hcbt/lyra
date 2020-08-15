@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import os
 import json
 
@@ -9,11 +7,14 @@ youtube_url = "https://www.youtube.com"
 youtube_video_url = youtube_url + "/watch?v="
 youtube_playlist_url = youtube_url + "/playlist?list="
 
+class playlists:
+    pass
+
 class playlistItems:
     def results(self, id): #used to make requests for playlist items
         resource_id = id
         youtube = utils.youtube_client.api_auth()
-        response = youtube.playlistItems().list(part="snippet", playlistId=resource_id, maxResults=50).execute()
+        response = youtube.playlistItems().list(part = "snippet", playlistId=resource_id, maxResults=50).execute()
         
         next_page_token = response.get("nextPageToken")
 
@@ -39,7 +40,6 @@ class playlistItems:
 
         for i in response["items"]:
             video_ids.append(i["snippet"]["resourceId"]["videoId"])
-            #yield i["snippet"]["resourceId"]["videoId"]
             
         return video_ids
 
@@ -49,8 +49,5 @@ class playlistItems:
 
         for i in response["items"]:
             video_titles.append(i["snippet"]["title"])
-            #yield i["snippet"]["title"]
 
         return video_titles
-
-        
