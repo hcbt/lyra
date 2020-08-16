@@ -34,8 +34,6 @@ def download(id):
         "progress_hooks": [download_progress_hook], 
         "outtmpl": "%(id)s.%(ext)s",
     }
-    
-    #os.chdir(destination)
 
     with youtube_dl.YoutubeDL(ytdl_options) as ytdl:
         video = ytdl.extract_info(id, download=False)

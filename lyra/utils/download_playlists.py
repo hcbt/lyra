@@ -39,8 +39,8 @@ def download(playlist, destination):
         pool2.close()
         pool2.join()
         
-        for id in video_ids:
-            os.remove(id + ".wav")
+        #for id in video_ids:
+        #    os.remove(id + ".wav")
         
     except:
         print(os.getcwd())#To show current path in case of path error
