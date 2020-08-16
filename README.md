@@ -1,5 +1,5 @@
 # lyra
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github//hcbt/lyra/blob/master/build_model.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github//hcbt/lyra/blob/master/lyra.ipynb)
 ## Problem
 
 If you're electronic music fan like me at some point you probably struggled with managing your playlists, especially if you're into many styles of electronic music. 
