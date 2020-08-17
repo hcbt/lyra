@@ -32,5 +32,6 @@ To build a model yourself you can use the given google colab link.
 - [ ] Add expanded dataset with more samples and broader spectrum of genres
 - [ ] Optimize code
 - [ ] Add more sources than youtube - spotify and other streaming services (would need to change the model since current model uses CNN and hence needs to download actual audio file to convert it to image(spectrogram))
-- [ ]A basic user interface
-- [ ]Selectable output playlists
+- [ ] A basic user interface
+- [ ] Selectable output playlists
+- [ ] Better error handling (currently there's basically none)

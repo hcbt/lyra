@@ -2,7 +2,8 @@
 import sys
 import os
 
-import utils.download_playlists
+import yt.download
+import yt.manage_playlists
 import model.compiled_model
 
 ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
@@ -12,13 +13,22 @@ def main():
     #playlist = sys.argv[2]
     #destination = sys.argv[3]
     
-    model_file = "model/lyra.h5"
-    playlist = "https://www.youtube.com/playlist?list=PLk9OF3AXEsI4Th-Xm-LPKP6HYbIxxpiQw"
-    destination = ROOT_DIR + "/tmp"
-    track_path = ROOT_DIR + "/test_data/V7kGgupwSaA.png"
+    #model_file = "model/lyra.h5"
+    #playlist = "https://www.youtube.com/playlist?list=PLk9OF3AXEsI4Th-Xm-LPKP6HYbIxxpiQw"
+    #destination = ROOT_DIR + "/tmp"
     
-    print("Downloading the playlist")
-    utils.download_playlists.download(playlist, destination)
+    class_names = ["house", "techno"]
+    
+    playlist_name = "haus"
+    
+    playlist_id = yt.manage_playlists.create_playlist(playlist_name)
+    print(playlist_id)
+    
+    #print("Downloading the playlist")
+    #utils.download_playlists.download(playlist, destination)
+    
+    #print("Sorting tracks in the playlist")
+    #for files in destination:
     
     #load_model(model_file)
     

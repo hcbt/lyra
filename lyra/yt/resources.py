@@ -1,7 +1,7 @@
 import os
 import json
 
-import utils.youtube_client
+import yt.client
 
 youtube_url = "https://www.youtube.com"
 youtube_video_url = youtube_url + "/watch?v="
@@ -13,7 +13,7 @@ class playlists:
 class playlistItems:
     def results(self, id): #used to make requests for playlist items
         resource_id = id
-        youtube = utils.youtube_client.api_auth()
+        youtube = yt.client.api_auth()
         response = youtube.playlistItems().list(part = "snippet", playlistId=resource_id, maxResults=50).execute()
         
         next_page_token = response.get("nextPageToken")

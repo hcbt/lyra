@@ -1,4 +1,4 @@
-import utils.youtube_client
+import yt.client
 
 youtube_url = "https://www.youtube.com"
 youtube_video_url = youtube_url + "/watch?v="
@@ -6,7 +6,7 @@ youtube_playlist_url = youtube_url + "/playlist?list="
 
 #Returns users playlists
 def list_playlists():
-    youtube = utils.youtube_client.api_auth()
+    youtube = yt.client.api_auth()
 
     request = youtube.playlists().list(part = "snippet, contentDetails", mine = True)
     
@@ -16,7 +16,7 @@ def list_playlists():
 
 #Creates a playlist with a given name and return playlist id
 def create_playlist(playlist_name):
-    youtube = utils.youtube_client.api_auth()
+    youtube = yt.client.api_auth()
     
     playlist_id = []
     

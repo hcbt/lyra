@@ -4,8 +4,8 @@ import time
 import sys
 import os
 
-import utils.youtube_resources
-import utils.youtube_download
+import youtube.youtube_resources
+import youtube.youtube_download
 import analysis.feature_extraction
 
 youtube_url = "https://www.youtube.com"
@@ -39,8 +39,8 @@ def download(playlist, destination):
         pool2.close()
         pool2.join()
         
-        #for id in video_ids:
-        #    os.remove(id + ".wav")
+        for id in video_ids:
+            os.remove(id + ".wav")
         
     except:
         print(os.getcwd())#To show current path in case of path error
