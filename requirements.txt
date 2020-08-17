@@ -1,13 +1,8 @@
 matplotlib
-sklearn
 keras
 tensorflow
-tensorboard
 scipy
 pandas
-Pillow
-sklearn
 youtube-dl
-split_folders
 google-auth-oauthlib
 google-api-python-client

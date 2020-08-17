@@ -33,7 +33,7 @@ def download(playlist, destination):
         
         pool1.map_async(utils.youtube_download.download, video_ids)
         pool1.close()
-        time.sleep(20)
+        time.sleep(30)
         pool2.map_async(analysis.feature_extraction.build_spectrogram, video_ids)
         pool1.join()
         pool2.close()
@@ -45,6 +45,3 @@ def download(playlist, destination):
     except:
         print(os.getcwd())#To show current path in case of path error
         print("Error")
-
-if __name__ == "__main__":
-    download()

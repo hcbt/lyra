@@ -38,11 +38,10 @@ def download(id):
     with youtube_dl.YoutubeDL(ytdl_options) as ytdl:
         video = ytdl.extract_info(id, download=False)
         title = video["title"]
-        print(title)
+        #print(title)
         
         ytdl.download([id])
         
-
 def get_metadata(id):
     ytdl_options = {
         "logger": Logger()
