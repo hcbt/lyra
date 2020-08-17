@@ -35,3 +35,4 @@ To build a model yourself you can use the given google colab link.
 - [ ] A basic user interface
 - [ ] Selectable output playlists
 - [ ] Better error handling (currently there's basically none)
+- [ ] Web frontend (serve backend using flask?)
