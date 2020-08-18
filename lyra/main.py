@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import numpy as np
 import sys
 import os
 
@@ -26,12 +27,12 @@ def main():
     #    print(genre, yt.manage_playlists.create_playlist(genre))
     #    playlists.append(yt.manage_playlists.create_playlist(genre))
     
-    #print(spectrograms)
-    
-    for spectrogram in spectrograms:
-        spectrogram_path = destination + "/" + spectrogram
-        #print(spectrogram_path)
-        print(spectrogram_path, model.compiled_model.determine_genre(model_file, spectrogram_path))
+    #for spectrogram in spectrograms:
+    #    spectrogram_path = destination + "/" + spectrogram
+    #    score = model.compiled_model.determine_genre(model_file, spectrogram_path)
+    #    print(score)
+     
+    model.compiled_model.determine_genre(model_file, destination, spectrograms)
         
     #for track in destination:
     #    print(track, model.compiled_model.determine_genre(model_file, track))
