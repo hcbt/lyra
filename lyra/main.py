@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#Main program file that does all the magic.
 import numpy as np
 import sys
 import os
@@ -9,47 +9,40 @@ import model.compiled_model
 
 ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
 
+def create_new_playlists():
+    pass
+    #Create output playlists for given genres
+    #for genre in genres:
+    #    playlists.append(yt.manage_playlists.create_playlist(genre))
+    #    print(genre, playlists[len(playlists)-1])#Prints playlist id for every genre
+
+def select_playlists():
+    pass
+
 def main():
     #Main parameters
     model_file = "model/lyra.h5"
     playlist = "https://www.youtube.com/playlist?list=PLk9OF3AXEsI4Th-Xm-LPKP6HYbIxxpiQw"
     destination = ROOT_DIR + "/tmp"
-    genres = ["house", "techno"]
+    genres = ["house", "techno"]#To-do: get genres from model classes
     playlists = []
     
     #Download input playlist
     #print("Downloading the playlist")
     #utils.download_playlists.download(playlist, destination)
-    spectrograms = os.listdir(destination)
-    
-    #Create output playlists for given genres
-    #for genre in genres:
-    #    print(genre, yt.manage_playlists.create_playlist(genre))
-    #    playlists.append(yt.manage_playlists.create_playlist(genre))
+    #spectrograms = os.listdir(destination)
     
     #for spectrogram in spectrograms:
     #    spectrogram_path = destination + "/" + spectrogram
     #    score = model.compiled_model.determine_genre(model_file, spectrogram_path)
     #    print(score)
      
-    model.compiled_model.determine_genre(model_file, destination, spectrograms)
-        
-    #for track in destination:
-    #    print(track, model.compiled_model.determine_genre(model_file, track))
+    #model.compiled_model.determine_genre(model_file, destination, spectrograms)
     
-    #playlist_name = "haus"
+    playlist_id = "PLS9qGVIfZRpzbz76tJhZai1gTrm_WSo9t"
+    video_id = "ML8JomV445E"
     
-    #playlist_id = yt.manage_playlists.create_playlist(playlist_name)
-    #print(playlist_id)
-    
-    #print("Sorting tracks in the playlist")
-    #for files in destination:
-    
-    #load_model(model_file)
-    
-    #genre = model.compiled_model.determine_genre(model_file, track_path)
-
-    #print(genre)
+    print(yt.resources.playlistItems.add_to_playlist(playlist_id, video_id))
     
 if __name__ == "__main__":
     main()

@@ -1,3 +1,4 @@
+#Execution of functions related to use of pre-built model
 import numpy as np
 import os
 import tensorflow as tf
@@ -14,10 +15,6 @@ def determine_genre(model_file, destination, spectrograms):
     img_width = 180
     
     model = tf.keras.models.load_model(model_file)
-    
-    #for spectrogram in spectrograms:
-    #    spectrogram_path = destination + "/" + spectrogram
-    #    print(spectrogram_path)
     
     for spectrogram in spectrograms:
         spectrogram_path = destination + "/" + spectrogram

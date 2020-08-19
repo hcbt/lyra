@@ -1,3 +1,4 @@
+#Downloads all tracks from specified playlist and generates spectrograms for those tracks
 import multiprocessing
 import itertools
 import time
@@ -28,8 +29,6 @@ def download(playlist, destination):
         #Set the multiprocessing pool        
         pool1 = multiprocessing.Pool(multiprocessing.cpu_count()//2)
         pool2 = multiprocessing.Pool(multiprocessing.cpu_count()//2)
-        #pool1 = multiprocessing.Pool(2)
-        #pool2 = multiprocessing.Pool(2)
         
         pool1.map_async(utils.youtube_download.download, video_ids)
         pool1.close()

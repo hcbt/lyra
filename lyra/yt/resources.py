@@ -8,7 +8,43 @@ youtube_video_url = youtube_url + "/watch?v="
 youtube_playlist_url = youtube_url + "/playlist?list="
 
 class playlists:
-    pass
+    #Returns users playlists
+    def list_playlists(self):
+        youtube = yt.client.api_auth()
+
+        request = youtube.playlists().list(part = "snippet, contentDetails", mine = True)
+    
+        response = request.execute()
+    
+        return response
+
+    #Creates a playlist with a given name and return playlist id
+    def create_playlist(self, playlist_name):
+        youtube = yt.client.api_auth()
+    
+        playlist_id = []
+    
+        request = youtube.playlists().insert(
+            part = "snippet, status",
+            body = 
+            {
+              "snippet": 
+              {
+                "title": playlist_name,
+                "defaultLanguage": "en"
+              },
+              "status": 
+              {
+                "privacyStatus": "private"
+              }
+            }
+        )
+    
+        response = request.execute()
+    
+        playlist_id.append(response["id"])
+    
+        return "".join(playlist_id)
 
 class playlistItems:
     def results(self, id): #used to make requests for playlist items
@@ -28,11 +64,7 @@ class playlistItems:
             else:
                 next_page_token = next_page["nextPageToken"]
          
-        return response   
-
-    def print_json(self, id): #prints entire response in formated json
-        response = self.results(id)
-        return json.dumps(response, indent=4, sort_keys=True)
+        return response
 
     def video_id(self, id):
         response = self.results(id)
@@ -51,3 +83,12 @@ class playlistItems:
             video_titles.append(i["snippet"]["title"])
 
         return video_titles
+        
+    #Add videos to playlist    
+    def add_to_playlist(self, playlist_id, video_id):
+        pass
+        #youtube = utils.youtube_client.apie_auth()
+        #
+        #response = request.execute()
+        #
+        #return response
