@@ -1,22 +1,49 @@
 #Main program file that does all the magic.
-import numpy as np
 import sys
 import os
 
 import yt.download
-import yt.manage_playlists
-import model.compiled_model
+import yt.resources
+#import model.compiled_model
+
+youtube_url = "https://www.youtube.com"
+youtube_video_url = youtube_url + "/watch?v="
+youtube_playlist_url = youtube_url + "/playlist?list="
 
 ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
 
-def create_new_playlists():
-    pass
-    #Create output playlists for given genres
-    #for genre in genres:
-    #    playlists.append(yt.manage_playlists.create_playlist(genre))
-    #    print(genre, playlists[len(playlists)-1])#Prints playlist id for every genre
+def create_new_playlists(genres):
+    pl = yt.resources.playlists()#Initiates class for ids and titles
+    playlist_ids = pl.playlist_id()#List of playlist ids
+    playlist_titles = pl.playlist_title()#List of playlist titles
+    playlist_map = {} #Dictionary for appending genres to playlists
+        
+    print("List of playlists in your channel: ")
+    for count, item in enumerate(playlist_titles):
+        print(count, item)
+    
+    for genre in genres:
+        playlist_map[genre] = pl.create_playlist(input("Please input playlist name for " + genre + ": "))
+    
+    return playlist_map
 
-def select_playlists():
+def select_playlists(genres):
+    pl = yt.resources.playlists()#Initiates class for ids and titles
+    playlist_ids = pl.playlist_id()#List of playlist ids
+    playlist_titles = pl.playlist_title()#List of playlist titles
+    playlist_map = {} #Dictionary for appending genres to playlists
+    
+    #Print a list of playlists and append selected playlists to genres
+    print("List of playlists in your channel: ")
+    for count, item in enumerate(playlist_titles):
+        print(count, item)
+        
+    for genre in genres:
+        playlist_map[genre] = playlist_ids[int(input("Please select playlist for " + genre + ": "))]
+    
+    return playlist_map
+    
+def move_to_playlist():
     pass
 
 def main():
@@ -27,22 +54,33 @@ def main():
     genres = ["house", "techno"]#To-do: get genres from model classes
     playlists = []
     
-    #Download input playlist
-    #print("Downloading the playlist")
-    #utils.download_playlists.download(playlist, destination)
-    #spectrograms = os.listdir(destination)
+    #playlistItems = yt.resources.playlistItems()
     
-    #for spectrogram in spectrograms:
-    #    spectrogram_path = destination + "/" + spectrogram
-    #    score = model.compiled_model.determine_genre(model_file, spectrogram_path)
-    #    print(score)
+    #print(select_playlists(genres))
+    print(create_new_playlists(genres))
+    
+    """
+    #Ask for user input with y/n for creating or using premade playlists and start a loop
+    #create_new_playlists()# returns True
+    try:
+        #Download input playlist
+        #print("Downloading the playlist")
+        #utils.download_playlists.download(playlist, destination)
+        #spectrograms = os.listdir(destination)
+        
+        #Determine genre for every spectrogram
+        #for spectrogram in spectrograms:
+        #    spectrogram_path = destination + "/" + spectrogram
+        #    score = model.compiled_model.determine_genre(model_file, spectrogram_path)
+        #    print(score)
      
-    #model.compiled_model.determine_genre(model_file, destination, spectrograms)
+        #model.compiled_model.determine_genre(model_file, destination, spectrograms)
     
-    playlist_id = "PLS9qGVIfZRpzbz76tJhZai1gTrm_WSo9t"
-    video_id = "ML8JomV445E"
-    
-    print(yt.resources.playlistItems.add_to_playlist(playlist_id, video_id))
-    
+        print(playlistItems.add_to_playlist(playlist_id, video_id))
+        break
+    except:
+        print("error")
+    """
+     
 if __name__ == "__main__":
     main()
