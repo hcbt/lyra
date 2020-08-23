@@ -10,8 +10,21 @@ youtube_playlist_url = youtube_url + "/playlist?list="
 class playlists:
     def results(self):        
         youtube = yt.client.api_auth()
-        request = youtube.playlists().list(part = "snippet, contentDetails", mine = True)
+        request = youtube.playlists().list(part = "snippet, contentDetails", mine = True, maxResults = 50)
         response = request.execute()
+
+        next_page_token = response.get("nextPageToken")
+
+        #Adds results from other pages if there's more than 50 videos in playlist
+        while ("nextPageToken" in response):
+            next_page = youtube.playlists().list(part="snippet, contentDetails", mine = True, maxResults = 50, pageToken = next_page_token)
+            response["items"] = response["items"] + next_page["items"]
+
+            if "nextPageToken" not in next_page:
+                response.pop("nextPageToken", None)
+            else:
+                next_page_token = next_page["nextPageToken"]
+         
         return response
     
     #Returns users playlist ids

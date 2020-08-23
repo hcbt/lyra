@@ -56,8 +56,8 @@ def main():
     
     #playlistItems = yt.resources.playlistItems()
     
-    #print(select_playlists(genres))
-    print(create_new_playlists(genres))
+    print(select_playlists(genres))
+    #print(create_new_playlists(genres))
     
     """
     #Ask for user input with y/n for creating or using premade playlists and start a loop
