@@ -4,7 +4,7 @@ import os
 
 import yt.download
 import yt.resources
-#import model.compiled_model
+import model.compiled_model
 
 youtube_url = "https://www.youtube.com"
 youtube_video_url = youtube_url + "/watch?v="
@@ -43,7 +43,7 @@ def select_playlists(genres):
     
     return playlist_map
     
-def move_to_playlist():
+def move_to_playlist(video_id):
     pass
 
 def main():
@@ -53,34 +53,20 @@ def main():
     destination = ROOT_DIR + "/tmp"
     genres = ["house", "techno"]#To-do: get genres from model classes
     playlists = []
+    ytp = yt.resources.playlistItems()
     
-    #playlistItems = yt.resources.playlistItems()
-    
-    print(select_playlists(genres))
-    #print(create_new_playlists(genres))
-    
-    """
-    #Ask for user input with y/n for creating or using premade playlists and start a loop
-    #create_new_playlists()# returns True
-    try:
-        #Download input playlist
-        #print("Downloading the playlist")
-        #utils.download_playlists.download(playlist, destination)
-        #spectrograms = os.listdir(destination)
-        
-        #Determine genre for every spectrogram
-        #for spectrogram in spectrograms:
-        #    spectrogram_path = destination + "/" + spectrogram
-        #    score = model.compiled_model.determine_genre(model_file, spectrogram_path)
-        #    print(score)
-     
-        #model.compiled_model.determine_genre(model_file, destination, spectrograms)
-    
-        print(playlistItems.add_to_playlist(playlist_id, video_id))
-        break
-    except:
-        print("error")
-    """
-     
+    #Needs a switch
+    playlist_map = select_playlists(genres)
+    #playlist_map = create_new_playlists(genres)
+
+    spectrograms = os.listdir(destination)
+
+    scores_map = model.compiled_model.determine_genre(model_file, destination, spectrograms)
+
+    #Adds tracks to genre playlists
+    for score in scores_map:
+        ytp.add_to_playlist(playlist_map[genres[scores_map[score]]], score[:-4])
+        print(score[:-4], playlist_map[genres[scores_map[score]]])
+
 if __name__ == "__main__":
     main()

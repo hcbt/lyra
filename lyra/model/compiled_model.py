@@ -1,4 +1,8 @@
 #Execution of functions related to use of pre-built model
+#print(
+#    "This image most likely belongs to {} with a {:.2f} percent confidence."
+#    .format(class_names[np.argmax(score)], 100 * np.max(score))
+#    )
 import numpy as np
 import os
 import tensorflow as tf
@@ -9,7 +13,8 @@ ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
 
 def determine_genre(model_file, destination, spectrograms):    
     class_names = ["house", "techno"]
-    
+    scores_map = {}
+
     batch_size = 32
     img_height = 180
     img_width = 180
@@ -25,7 +30,6 @@ def determine_genre(model_file, destination, spectrograms):
         predictions = model.predict(img_array)
         score = tf.nn.softmax(predictions[0])
         
-        print(
-            "This image most likely belongs to {} with a {:.2f} percent confidence."
-            .format(class_names[np.argmax(score)], 100 * np.max(score))
-        )
+        scores_map[spectrogram] = np.argmax(score)#Map score and video_id(which is the filename in this case) to dictionary
+
+    return scores_map
