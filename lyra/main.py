@@ -42,9 +42,13 @@ def select_playlists(genres):
         playlist_map[genre] = playlist_ids[int(input("Please select playlist for " + genre + ": "))]
     
     return playlist_map
-    
-def move_to_playlist(video_id):
-    pass
+
+def move_to_playlist(genres, playlist_map, scores_map):
+    ytp = yt.resources.playlistItems()
+
+    for score in scores_map:
+        ytp.add_to_playlist(playlist_map[genres[scores_map[score]]], score[:-4])
+        print(score[:-4], playlist_map[genres[scores_map[score]]])
 
 def main():
     #Main parameters
@@ -52,21 +56,15 @@ def main():
     playlist = "https://www.youtube.com/playlist?list=PLk9OF3AXEsI4Th-Xm-LPKP6HYbIxxpiQw"
     destination = ROOT_DIR + "/tmp"
     genres = ["house", "techno"]#To-do: get genres from model classes
-    playlists = []
-    ytp = yt.resources.playlistItems()
-    
+    spectrograms = os.listdir(destination)
+
     #Needs a switch
     playlist_map = select_playlists(genres)
     #playlist_map = create_new_playlists(genres)
 
-    spectrograms = os.listdir(destination)
+    scores_map = model.compiled_model.determine_genre(model_file, destination, spectrograms)#Maps tracks to genres
 
-    scores_map = model.compiled_model.determine_genre(model_file, destination, spectrograms)
-
-    #Adds tracks to genre playlists
-    for score in scores_map:
-        ytp.add_to_playlist(playlist_map[genres[scores_map[score]]], score[:-4])
-        print(score[:-4], playlist_map[genres[scores_map[score]]])
+    move_to_playlist(genres, playlist_map, scores_map)#Adds tracks to genre playlists 
 
 if __name__ == "__main__":
     main()
