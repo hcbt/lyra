@@ -12,6 +12,10 @@ youtube_playlist_url = youtube_url + "/playlist?list="
 
 ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
 
+model_file = "model/lyra.h5"
+destination = ROOT_DIR + "/tmp"
+genres = ["house", "techno"]#To-do: get genres from model classes
+
 def create_new_playlists(genres):
     pl = yt.resources.playlists()#Initiates class for ids and titles
     playlist_ids = pl.playlist_id()#List of playlist ids
@@ -52,15 +56,14 @@ def move_to_playlist(genres, playlist_map, scores_map):
 
 def main():
     #Main parameters
-    model_file = "model/lyra.h5"
-    playlist = "https://www.youtube.com/playlist?list=PLk9OF3AXEsI4Th-Xm-LPKP6HYbIxxpiQw"
-    destination = ROOT_DIR + "/tmp"
-    genres = ["house", "techno"]#To-do: get genres from model classes
     spectrograms = os.listdir(destination)
 
-    #Needs a switch
-    playlist_map = select_playlists(genres)
-    #playlist_map = create_new_playlists(genres)
+    case = int(input("Please enter 0 to select playlists or 1 to create new playlists: "))
+
+    if case == 0:
+        playlist_map = select_playlists(genres)
+    elif case == 1:
+        playlist_map = create_new_playlists(genres)
 
     scores_map = model.compiled_model.determine_genre(model_file, destination, spectrograms)#Maps tracks to genres
 
