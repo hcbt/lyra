@@ -6,16 +6,6 @@ import yt.download
 import yt.resources
 import model.compiled_model
 
-youtube_url = "https://www.youtube.com"
-youtube_video_url = youtube_url + "/watch?v="
-youtube_playlist_url = youtube_url + "/playlist?list="
-
-ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
-
-model_file = "model/lyra.h5"
-destination = ROOT_DIR + "/tmp"
-genres = ["house", "techno"]#To-do: get genres from model classes
-
 def create_new_playlists(genres):
     pl = yt.resources.playlists()#Initiates class for ids and titles
     playlist_ids = pl.playlist_id()#List of playlist ids
@@ -55,7 +45,10 @@ def move_to_playlist(genres, playlist_map, scores_map):
         print(score[:-4], playlist_map[genres[scores_map[score]]])
 
 def main():
-    #Main parameters
+    ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
+    model_file = "model/lyra.h5"
+    destination = ROOT_DIR + "/tmp"
+    genres = ["house", "techno"]#To-do: get genres from model classes
     spectrograms = os.listdir(destination)
 
     case = int(input("Please enter 0 to select playlists or 1 to create new playlists: "))
