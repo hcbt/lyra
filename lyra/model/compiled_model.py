@@ -9,9 +9,9 @@ import tensorflow as tf
 
 from tensorflow import keras
 
-ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
+def determine_genre(model_file, destination, spectrograms):
+    ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
 
-def determine_genre(model_file, destination, spectrograms):    
     class_names = ["house", "techno"]
     scores_map = {}
 

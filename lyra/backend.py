@@ -4,7 +4,7 @@ import os
 
 import yt.download
 import yt.resources
-#import model.compiled_model
+import model.compiled_model
 
 ytp = yt.resources.playlistItems()
 
@@ -18,4 +18,8 @@ def find_genre(video_id):
     destination = ROOT_DIR + "/tmp"
     genres = ["house", "techno"]#To-do: get genres from model classes
 
-    pass
+    
+
+    id_genre = model.compiled_model.determine_genre(model_file, destination, spectrograms)
+
+    return id_genre

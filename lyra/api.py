@@ -13,6 +13,6 @@ async def root():
 async def playlist(playlist_id):
     return {"items": backend.playlist_items(playlist_id)}
 
-#@lyra.get("/video/{video_id}")
-#async def video(video_id):
-#    return {"genre": genre}
+@lyra.get("/video/{video_id}")
+async def video(video_id):
+    return {"genre": backend.find_genre(video_id)}
