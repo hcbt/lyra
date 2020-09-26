@@ -22,7 +22,9 @@ def download_progress_hook(client):
     #    print("Done downloading")
     pass
 
-def download(id):
+def download(id, working_directory):
+    os.chdir(working_directory)
+
     # audio only, we dont need video obviously
     ytdl_options = {
         "format": "bestaudio",
@@ -36,8 +38,8 @@ def download(id):
     }
 
     with youtube_dl.YoutubeDL(ytdl_options) as ytdl:
-        video = ytdl.extract_info(id, download=False)
-        title = video["title"]
+        #video = ytdl.extract_info(id, download=False)
+        #title = video["title"]
         #print(title)
         
         ytdl.download([id])

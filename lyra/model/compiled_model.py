@@ -1,35 +1,27 @@
-#Execution of functions related to use of pre-built model
-#print(
-#    "This image most likely belongs to {} with a {:.2f} percent confidence."
-#    .format(class_names[np.argmax(score)], 100 * np.max(score))
-#    )
 import numpy as np
 import os
 import tensorflow as tf
 
 from tensorflow import keras
+from tensorflow import function
 
-def determine_genre(model_file, destination, spectrograms):
-    ROOT_DIR = os.path.dirname(os.path.abspath("../setup.py"))
+@tf.function
+def serve(model_file):
+    model = tf.keras.models.load_model(model_file)
+    return model
 
-    class_names = ["house", "techno"]
-    scores_map = {}
-
-    batch_size = 32
+def determine_genre(model_file, working_directory, id):
     img_height = 180
     img_width = 180
     
-    model = tf.keras.models.load_model(model_file)
-    
-    for spectrogram in spectrograms:
-        spectrogram_path = destination + "/" + spectrogram
-        img = keras.preprocessing.image.load_img(spectrogram_path, target_size=(img_height, img_width))
-        img_array = keras.preprocessing.image.img_to_array(img)
-        img_array = tf.expand_dims(img_array, 0) # Create a batch
+    #model = tf.keras.models.load_model(model_file)
+    model = serve(model_file)
 
-        predictions = model.predict(img_array)
-        score = tf.nn.softmax(predictions[0])
-        
-        scores_map[spectrogram] = np.argmax(score)#Map score and video_id(which is the filename in this case) to dictionary
+    img = keras.preprocessing.image.load_img(id + ".png", target_size=(img_height, img_width))
+    img_array = keras.preprocessing.image.img_to_array(img)
+    img_array = tf.expand_dims(img_array, 0) # Create a batch
 
-    return scores_map
+    predictions = model.predict(img_array)
+    score = tf.nn.softmax(predictions[0])
+
+    return np.argmax(score)

@@ -9,10 +9,21 @@ lyra = FastAPI()
 async def root():
     return {"message": "Hello world"}
 
-@lyra.get("/playlist/{playlist_id}")
-async def playlist(playlist_id):
-    return {"items": backend.playlist_items(playlist_id)}
+@lyra.get("/youtube/auth")
+async def google_auth():
+    pass
 
-@lyra.get("/video/{video_id}")
-async def video(video_id):
-    return {"genre": backend.find_genre(video_id)}
+@lyra.get("/spotify/auth")
+async def spotify_auth():
+    pass
+
+@lyra.get("/youtube/playlist/{playlist_id}")
+async def youtube_playlist(playlist_id):
+    return {"items": backend.process_playlist_youtube(playlist_id)}
+
+@lyra.get("/youtube/video/{video_id}")
+async def youtube_video(video_id):
+    #return {"items": video_id, "genre": backend.process_track_youtube(video_id)}
+    return {"items": [{video_id: {"genre": backend.process_track_youtube(video_id)}}]}
+    #return backend.process_track_youtube(video_id)
+    #return {"id": video_id}

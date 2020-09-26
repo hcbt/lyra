@@ -12,7 +12,9 @@ def load_file(id):
     return y, sr
 
 # Audio to spectrogram
-def build_spectrogram(id):
+def build_spectrogram(id, working_directory):
+    os.chdir(working_directory)
+
     y, sr = load_file(id)
 
     plt.figure(figsize=(10, 10))
