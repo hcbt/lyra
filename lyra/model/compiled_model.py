@@ -1,21 +1,18 @@
-import numpy as np
-import os
 import tensorflow as tf
+import numpy as np
+import pathlib
+import os
 
 from tensorflow import keras
 from tensorflow import function
 
-@tf.function
-def serve(model_file):
+def determine_genre(ROOT_DIR, working_directory, id):
+    model_file = os.path.abspath(os.path.join(ROOT_DIR, "model/lyra.h5"))
+    
     model = tf.keras.models.load_model(model_file)
-    return model
 
-def determine_genre(model_file, working_directory, id):
     img_height = 180
     img_width = 180
-    
-    #model = tf.keras.models.load_model(model_file)
-    model = serve(model_file)
 
     img = keras.preprocessing.image.load_img(id + ".png", target_size=(img_height, img_width))
     img_array = keras.preprocessing.image.img_to_array(img)

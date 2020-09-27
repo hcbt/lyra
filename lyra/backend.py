@@ -1,6 +1,7 @@
 import numpy as np
 import tempfile
 import logging
+import pathlib
 import sys
 import os
 
@@ -39,12 +40,17 @@ def playlist_items_youtube(playlist_id):
 
 #Gets genres for a list of ids
 def find_genre_youtube(video_id, working_directory):
-    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-    model_file = os.path.join(ROOT_DIR, "model/lyra.h5")
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
+    ROOT_DIR = pathlib.Path(__file__).parent.absolute()
+    #model_file = os.path.abspath(os.path.join(ROOT_DIR, "model/lyra.h5"))
+    #print("current dir model: " + os.getcwd())
+    
+    print(pathlib.Path(__file__).parent.absolute())
+    #print("current dir pre download: " + os.getcwd())
+    
     yt.download.download(video_id, working_directory)
+    print("current dir pre analysis: " + os.getcwd())
     analysis.feature_extraction.build_spectrogram(video_id, working_directory)
-    id_genre = model.compiled_model.determine_genre(model_file, working_directory, video_id)
+    print("current dir pre model: " + os.getcwd())
+    id_genre = model.compiled_model.determine_genre(ROOT_DIR, working_directory, video_id)
 
     return id_genre
