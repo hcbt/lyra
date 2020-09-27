@@ -8,7 +8,7 @@ from tensorflow import function
 
 def determine_genre(ROOT_DIR, working_directory, id):
     model_file = os.path.abspath(os.path.join(ROOT_DIR, "model/lyra.h5"))
-    
+
     model = tf.keras.models.load_model(model_file)
 
     img_height = 180
@@ -20,5 +20,7 @@ def determine_genre(ROOT_DIR, working_directory, id):
 
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
+
+    os.chdir(ROOT_DIR)
 
     return np.argmax(score)
