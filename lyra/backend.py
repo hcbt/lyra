@@ -22,7 +22,10 @@ def process_playlist_youtube(playlist_id):
     working_directory = tempfile.mkdtemp()
 
     for video_id in video_ids:
-        playlist[video_id] = genres[find_genre_youtube(video_id, working_directory)]
+        try: 
+            playlist[video_id] = genres[find_genre_youtube(video_id, working_directory)]
+        except:
+            pass
 
     return playlist
 
@@ -41,16 +44,11 @@ def playlist_items_youtube(playlist_id):
 #Gets genres for a list of ids
 def find_genre_youtube(video_id, working_directory):
     ROOT_DIR = pathlib.Path(__file__).parent.absolute()
-    #model_file = os.path.abspath(os.path.join(ROOT_DIR, "model/lyra.h5"))
-    #print("current dir model: " + os.getcwd())
     
-    print(pathlib.Path(__file__).parent.absolute())
-    #print("current dir pre download: " + os.getcwd())
+    #print(pathlib.Path(__file__).parent.absolute())
     
     yt.download.download(video_id, working_directory)
-    print("current dir pre analysis: " + os.getcwd())
     analysis.feature_extraction.build_spectrogram(video_id, working_directory)
-    print("current dir pre model: " + os.getcwd())
     id_genre = model.compiled_model.determine_genre(ROOT_DIR, working_directory, video_id)
 
     return id_genre

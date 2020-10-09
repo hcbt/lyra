@@ -23,7 +23,4 @@ async def youtube_playlist(playlist_id):
 
 @lyra.get("/youtube/video/{video_id}")
 async def youtube_video(video_id):
-    #return {"items": video_id, "genre": backend.process_track_youtube(video_id)}
-    return {"items": [{video_id: {"genre": backend.process_track_youtube(video_id)}}]}
-    #return backend.process_track_youtube(video_id)
-    #return {"id": video_id}
+    return {"items": [{video_id: {"genre": backend.process_track_youtube(video_id) }}]}
