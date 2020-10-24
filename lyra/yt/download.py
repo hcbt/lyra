@@ -8,8 +8,8 @@ youtube_playlist_url = youtube_url + "/playlist?list="
 
 class Logger(object):
     def debug(self, message):
-        print(message)
-        #pass
+        #print(message)
+        pass
 
     def warning(self, message):
         print(message)
