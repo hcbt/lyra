@@ -4,7 +4,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 def main():
     #redirect_uri = "", scope = "user-library-read"
-    sp = spotipy.Spotify(auth_manager = SpotifyClientCredentials(client_id = "0aa44a85743746e899db22ea4bfc94c6", 
+    sp = spotipy.Spotify(auth_manager = SpotifyClientCredentials(client_id = "", 
                                                                  client_secret = ""))
 
     results = sp.search(q = "Plastikman - Spastik", limit = 20)

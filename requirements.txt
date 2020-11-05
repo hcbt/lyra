@@ -4,6 +4,7 @@ tensorflow
 scipy
 pandas
 fastapi
+pymongo
 uvicorn
 youtube-dl
 google-auth-oauthlib

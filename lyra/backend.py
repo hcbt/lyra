@@ -5,6 +5,7 @@ import pathlib
 import sys
 import os
 
+import db.db
 import yt.download
 import yt.resources
 import analysis.feature_extraction
@@ -15,26 +16,26 @@ ytp = yt.resources.playlistItems()
 def process_playlist_youtube(playlist_id):
     playlist = {}
 
-    genres = ["house", "techno"]
-
     video_ids = playlist_items_youtube(playlist_id)
 
     working_directory = tempfile.mkdtemp()
 
+    #Find genre for every track in the playlist
     for video_id in video_ids:
-        try: 
-            playlist[video_id] = genres[find_genre_youtube(video_id, working_directory)]
+        try:
+            playlist[video_id] = find_genre_youtube(video_id, working_directory)
         except:
             pass
 
     return playlist
 
 def process_track_youtube(video_id):
-    genres = ["house", "techno"]
-
     working_directory = tempfile.mkdtemp()
 
-    return str(genres[find_genre_youtube(video_id, working_directory)])
+    try:
+        return find_genre_youtube(video_id, working_directory)
+    except:
+        pass
 
 #Returns ids of items in a playlist
 def playlist_items_youtube(playlist_id):
@@ -44,11 +45,16 @@ def playlist_items_youtube(playlist_id):
 #Gets genres for a list of ids
 def find_genre_youtube(video_id, working_directory):
     ROOT_DIR = pathlib.Path(__file__).parent.absolute()
-    
-    #print(pathlib.Path(__file__).parent.absolute())
-    
-    yt.download.download(video_id, working_directory)
-    analysis.feature_extraction.build_spectrogram(video_id, working_directory)
-    id_genre = model.compiled_model.determine_genre(ROOT_DIR, working_directory, video_id)
+    genres = ["house", "techno"]
+
+    #Check by id if track already exists in db, if not - do analysis
+    if db.db.find_entry(video_id) is None:
+        yt.download.download(video_id, working_directory)
+        analysis.feature_extraction.build_spectrogram(video_id, working_directory)
+        genre = model.compiled_model.determine_genre(ROOT_DIR, working_directory, video_id)
+        db.db.add_entry(video_id, genres[genre])#Adds entry to db for new track
+        id_genre = genres[genre]
+    else:
+        id_genre = db.db.find_entry(video_id)["genre"]
 
     return id_genre
