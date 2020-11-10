@@ -1,4 +1,6 @@
 import os
+import warnings
+warnings.filterwarnings("ignore")
 
 import matplotlib
 matplotlib.use('Agg')

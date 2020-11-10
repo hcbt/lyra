@@ -2,6 +2,7 @@ import numpy as np
 import tempfile
 import logging
 import pathlib
+import tqdm
 import sys
 import os
 
@@ -23,7 +24,7 @@ def process_playlist_youtube(playlist_id):
     working_directory = tempfile.mkdtemp()
 
     #Find genre for every track in the playlist
-    for video_id in video_ids:
+    for video_id in tqdm.tqdm(video_ids):
         try:
             playlist[video_id] = find_genre_youtube(model_file, video_id, working_directory)
         except:
